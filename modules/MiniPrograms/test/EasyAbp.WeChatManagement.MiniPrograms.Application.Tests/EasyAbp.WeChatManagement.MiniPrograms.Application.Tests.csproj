@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\common.props" />
+  <Import Project="..\..\..\..\common.props" />
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\EasyAbp.WeChatManagement.MiniPrograms.Application\EasyAbp.WeChatManagement.MiniPrograms.Application.csproj" />
     <ProjectReference Include="..\EasyAbp.WeChatManagement.MiniPrograms.Domain.Tests\EasyAbp.WeChatManagement.MiniPrograms.Domain.Tests.csproj" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
   </ItemGroup>
 
 </Project>

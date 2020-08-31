@@ -1,6 +1,7 @@
 using Shouldly;
 using System.Threading.Tasks;
-using EasyAbp.WeChatManagement.MiniPrograms.Dtos;
+using EasyAbp.WeChatManagement.MiniPrograms.Login;
+using EasyAbp.WeChatManagement.MiniPrograms.Login.Dtos;
 using EasyAbp.WeChatManagement.MiniPrograms.UserInfos;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace EasyAbp.WeChatManagement.MiniPrograms
         public async Task Request_Tokens_Should_Get_AccessToken()
         {
             // Arrange
-            var input = new LoginDto
+            var input = new LoginInput
             {
                 AppId = "AppId",
                 Code = "Code",
@@ -40,11 +41,10 @@ namespace EasyAbp.WeChatManagement.MiniPrograms
             };
 
             // Act
-            var response = await _loginAppService.LoginAsync(input);
+            var result = await _loginAppService.LoginAsync(input);
 
             // Assert
-            response.ShouldNotBeNull();
-            response.AccessToken.ShouldNotBeEmpty();
+            result.ShouldNotBeNull();
         }
     }
 }
