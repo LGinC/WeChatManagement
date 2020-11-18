@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using EasyAbp.WeChatManagement.MiniPrograms.UserInfos;
 
-namespace EasyAbp.WeChatManagement.MiniPrograms.Dtos
+namespace EasyAbp.WeChatManagement.MiniPrograms.Login.Dtos
 {
-    public class LoginDto
+    public class LoginInput
     {
         /// <summary>
         /// 小程序的 appid
