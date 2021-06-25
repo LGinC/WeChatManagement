@@ -2,6 +2,7 @@
   "culture": "zh-Hans",
   "texts": {
     "ManageYourProfile": "管理个人资料",
+    "Permission:MiniPrograms": "小程序管理",
     "Permission:MiniProgram": "小程序",
     "Permission:Create": "新建",
     "Permission:Update": "编辑",
@@ -9,6 +10,7 @@
     "Menu:EasyAbpWeChatManagement": "微信管理",
     "Menu:MiniProgramManagement": "小程序管理",
     "Menu:MiniProgram": "小程序",
+    "ACodeGenerationFailed": "小程序码生成失败",
     "MiniProgram": "小程序",
     "MiniProgramWeChatComponentId": "微信第三方平台 ID",
     "MiniProgramWeChatComponentIdPlaceHolder": "通过微信第三方平台管理则必填",
@@ -44,6 +46,8 @@
     "UserInfoCity": "城市",
     "UserInfoProvince": "省份",
     "UserInfoCountry": "国家",
-    "UserInfoAvatarUrl": "头像图片"
+    "UserInfoAvatarUrl": "头像图片",
+    "WechatAccountHasBeenBound": "您的微信已被其他用户绑定",
+    "WechatAccountHasNotBeenBound": "您的微信尚未绑定"
   }
 }

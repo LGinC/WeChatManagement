@@ -1,6 +1,7 @@
 {
   "culture": "vi",
   "texts": {
+    "Permission:MiniPrograms": "MiniProgramManagement",
     "Permission:MiniProgram": "MiniProgram",
     "Permission:Create": "Create",
     "Permission:Update": "Update",
@@ -8,6 +9,7 @@
     "Menu:EasyAbpWeChatManagement": "EasyAbpWeChatManagement",
     "Menu:MiniProgramManagement": "MiniProgramManagement",
     "Menu:MiniProgram": "MenuMiniProgram",
+    "ACodeGenerationFailed": "ACodeGenerationFailed",
     "MiniProgram": "MiniProgram",
     "MiniProgramWeChatComponentId": "MiniProgramWeChatComponentId",
     "MiniProgramWeChatComponentIdPlaceHolder": "MiniProgramWeChatComponentIdPlaceHolder",
@@ -44,6 +46,7 @@
     "UserInfoProvince": "UserInfoProvince",
     "UserInfoCountry": "UserInfoCountry",
     "UserInfoAvatarUrl": "UserInfoAvatarUrl",
-    "Setting:DefaultPcLoginMiniProgramName": "Setting:DefaultPcLoginMiniProgramName"
+    "Setting:DefaultPcLoginMiniProgramName": "Setting:DefaultPcLoginMiniProgramName",
+    "WechatAccountHasBeenBound": "WechatAccountHasBeenBound"
   }
 }
