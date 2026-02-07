@@ -301,9 +301,9 @@ select2@^4.0.13:
   integrity sha512-1JeB87s6oN/TDxQQYCvS5EFoQyvV6eYMZZ0AeA4tdFDYWN3BAGZ8npr17UBFddU0lgAt3H0yjX3X6/ekOj1yjw==
 
 sweetalert2@^11.3.6:
-  version "11.10.7"
-  resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.10.7.tgz#db2b8ce486f590404c761e051c7e40c80d648fae"
-  integrity sha512-5Jlzrmaitay6KzU+2+LhYu9q+L4v/dZ8oZyEDH14ep0C/QilCnFLHmqAyD/Lhq/lm5DiwsOs6Tr58iv8k3wyGg==
+  version "11.26.18"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.26.18.tgz#86077ab19cd55f36d709e01a9b72ac4aef4c778e"
+  integrity sha512-3O5feBqV+hTIOwCRKGuZGHosjiuBAKP/vpBl6vKFZeVYfCUGdXqXuuidn6YXHan3f6e62UdmnjwJBt8UtDVBhg==
 
 timeago@^1.6.7:
   version "1.6.7"
