@@ -134,7 +134,21 @@ namespace WeChatManagementSample.IdentityServer
                     consoleClientId,
                     commonScopes,
                     new[] { "password", "client_credentials", WeChatMiniProgramConsts.GrantType },
-                    (configurationSection["WeChatManagementSample_App:ClientSecret"] ?? "1q2w3e*").Sha256()
+                    null
+                );
+            }
+
+            // WeChat MiniProgram
+            var weChatMiniProgramPcLoginClientId =
+                configurationSection["WeChatManagementSample_WeChatMiniProgram:ClientId"];
+
+            if (!weChatMiniProgramPcLoginClientId.IsNullOrWhiteSpace())
+            {
+                await CreateClientAsync(
+                    weChatMiniProgramPcLoginClientId,
+                    commonScopes,
+                    new[] { "refresh_token", WeChatMiniProgramConsts.GrantType },
+                    (configurationSection["WeChatManagementSample_WeChatMiniProgram:ClientSecret"] ?? "1q2w3e*").Sha256()
                 );
             }
         }
@@ -148,7 +162,7 @@ namespace WeChatManagementSample.IdentityServer
             string postLogoutRedirectUri = null,
             IEnumerable<string> permissions = null)
         {
-            var client = await _clientRepository.FindByCliendIdAsync(name);
+            var client = await _clientRepository.FindByClientIdAsync(name);
             if (client == null)
             {
                 client = await _clientRepository.InsertAsync(
@@ -188,7 +202,7 @@ namespace WeChatManagementSample.IdentityServer
                 }
             }
 
-            if (client.FindSecret(secret) == null)
+            if (!secret.IsNullOrWhiteSpace() && client.FindSecret(secret) == null)
             {
                 client.AddSecret(secret);
             }

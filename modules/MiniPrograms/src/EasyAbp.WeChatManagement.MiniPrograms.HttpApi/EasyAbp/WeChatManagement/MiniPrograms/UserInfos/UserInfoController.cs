@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using EasyAbp.WeChatManagement.Common;
 using EasyAbp.WeChatManagement.MiniPrograms.UserInfos.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp;
@@ -7,8 +8,8 @@ using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.WeChatManagement.MiniPrograms.UserInfos
 {
-    [RemoteService(Name = "EasyAbpWeChatManagementMiniPrograms")]
-    [Route("/api/weChatManagement/miniPrograms/userInfo")]
+    [RemoteService(Name = WeChatManagementRemoteServiceConsts.RemoteServiceName)]
+    [Route("/api/wechat-management/mini-programs/user-info")]
     public class UserInfoController : MiniProgramsController, IUserInfoAppService
     {
         private readonly IUserInfoAppService _service;
@@ -29,6 +30,12 @@ namespace EasyAbp.WeChatManagement.MiniPrograms.UserInfos
         public Task<PagedResultDto<UserInfoDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
             return _service.GetListAsync(input);
+        }
+
+        [HttpPut]
+        public Task<UserInfoDto> UpdateAsync(UserInfoModel input)
+        {
+            return _service.UpdateAsync(input);
         }
     }
 }

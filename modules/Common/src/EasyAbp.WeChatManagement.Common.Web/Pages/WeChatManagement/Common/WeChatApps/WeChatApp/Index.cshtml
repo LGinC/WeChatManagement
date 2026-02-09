@@ -1,0 +1,59 @@
+@page
+@using EasyAbp.WeChatManagement.Common.Permissions
+@using EasyAbp.WeChatManagement.Common.Localization
+@using EasyAbp.WeChatManagement.Common.Web.Menus
+@using EasyAbp.WeChatManagement.Common.Web.Pages.WeChatManagement.Common.WeChatApps.WeChatApp
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<CommonResource> L
+@inject IAuthorizationService Authorization
+@{
+    PageLayout.Content.Title = L["Menu:WeChatApp"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:EasyAbpWeChatManagement"].Value);
+    PageLayout.Content.MenuItemName = CommonMenus.WeChatApp;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/WeChatManagement/Common/WeChatApps/WeChatApp/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/WeChatManagement/Common/WeChatApps/WeChatApp/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(CommonPermissions.WeChatApp.Create))
+    { 
+        <abp-button id="NewWeChatAppButton"
+                    text="@L["CreateWeChatApp"].Value"
+                    icon="plus"
+                    size="Small"
+                    button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="WeChatAppTable" class="nowrap">
+            <thead>
+            <tr>
+                <th>@L["Actions"]</th>
+                <th>@L["WeChatAppType"]</th>
+                <th>@L["WeChatAppComponentWeChatAppId"]</th>
+                <th>@L["WeChatAppName"]</th>
+                <th>@L["WeChatAppDisplayName"]</th>
+                <th>@L["WeChatAppOpenAppIdOrName"]</th>
+                <th>@L["WeChatAppAppId"]</th>
+                <th>@L["WeChatAppAppSecret"]</th>
+                <th>@L["WeChatAppToken"]</th>
+                <th>@L["WeChatAppEncodingAesKey"]</th>
+                <th>@L["WeChatAppIsStatic"]</th>
+            </tr>
+            </thead>
+        </abp-table>
+    </abp-card-body>
+</abp-card>

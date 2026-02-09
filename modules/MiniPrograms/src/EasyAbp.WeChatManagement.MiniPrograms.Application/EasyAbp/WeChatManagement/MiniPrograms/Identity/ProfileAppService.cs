@@ -1,14 +1,12 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using EasyAbp.Abp.WeChat.MiniProgram.Infrastructure;
-using EasyAbp.Abp.WeChat.MiniProgram.Services.Login;
+using EasyAbp.Abp.WeChat.Common.Infrastructure.Services;
+using EasyAbp.Abp.WeChat.MiniProgram.Services.PhoneNumber;
 using EasyAbp.WeChatManagement.MiniPrograms.Identity.Dtos;
-using EasyAbp.WeChatManagement.MiniPrograms.MiniPrograms;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Volo.Abp;
 using Volo.Abp.Identity;
-using Volo.Abp.Json;
 using Volo.Abp.Users;
 
 namespace EasyAbp.WeChatManagement.MiniPrograms.Identity
@@ -16,23 +14,21 @@ namespace EasyAbp.WeChatManagement.MiniPrograms.Identity
     [Authorize]
     public class ProfileAppService : MiniProgramsAppService, IProfileAppService
     {
-        private readonly LoginService _loginService;
+        private readonly IOptions<IdentityOptions> _identityOptions;
         private readonly IdentityUserManager _identityUserManager;
-        private readonly IJsonSerializer _jsonSerializer;
-        private readonly IMiniProgramRepository _miniProgramRepository;
+        private readonly IAbpWeChatServiceFactory _abpWeChatServiceFactory;
 
         public ProfileAppService(
-            LoginService loginService,
+            IOptions<IdentityOptions> identityOptions,
             IdentityUserManager identityUserManager,
-            IJsonSerializer jsonSerializer,
-            IMiniProgramRepository miniProgramRepository)
+            IAbpWeChatServiceFactory abpWeChatServiceFactory)
         {
-            _loginService = loginService;
+            ;
+            _identityOptions = identityOptions;
             _identityUserManager = identityUserManager;
-            _jsonSerializer = jsonSerializer;
-            _miniProgramRepository = miniProgramRepository;
+            _abpWeChatServiceFactory = abpWeChatServiceFactory;
         }
-        
+
         /// <summary>
         /// 通过微信开放能力获取并给当前用户绑定手机号，更新信息：https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/getPhoneNumber.html
         /// </summary>
@@ -42,21 +38,20 @@ namespace EasyAbp.WeChatManagement.MiniPrograms.Identity
         /// <exception cref="AbpIdentityResultException"></exception>
         public async Task BindPhoneNumberAsync(BindPhoneNumberInput input)
         {
-            var user = await _identityUserManager.GetByIdAsync(CurrentUser.GetId());
-            
-            var miniProgram = await _miniProgramRepository.GetAsync(x => x.AppId == input.AppId);
+            await _identityOptions.SetAsync();
 
-            var response = await _loginService.Code2SessionAsync(miniProgram.AppId, miniProgram.AppSecret, input.Code);
+            var user = await _identityUserManager.GetByIdAsync(CurrentUser.GetId());
+
+            var phoneNumberWeService = await _abpWeChatServiceFactory.CreateAsync<PhoneNumberWeService>(input.AppId);
+
+            var response = await phoneNumberWeService.GetPhoneNumberAsync(input.Code);
 
             if (response.ErrorCode != 0)
             {
                 throw new BusinessException(message: $"WeChat error: [{response.ErrorCode}]: {response.ErrorMessage}");
             }
 
-            var decryptedData = _jsonSerializer.Deserialize<Dictionary<string, object>>(AesHelper
-                .AesDecrypt(input.EncryptedData, input.Iv, response.SessionKey));
-
-            var phoneNumber = decryptedData["phoneNumber"] as string;
+            var phoneNumber = response.PhoneInfo.PhoneNumber;
 
             _identityUserManager.RegisterTokenProvider(TokenOptions.DefaultPhoneProvider,
                 new StaticPhoneNumberTokenProvider());

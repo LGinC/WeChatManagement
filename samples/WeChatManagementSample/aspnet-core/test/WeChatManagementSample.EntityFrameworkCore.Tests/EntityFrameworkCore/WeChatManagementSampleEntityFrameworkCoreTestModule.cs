@@ -7,11 +7,12 @@ using Volo.Abp;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Sqlite;
 using Volo.Abp.Modularity;
+using Volo.Abp.Uow;
 
 namespace WeChatManagementSample.EntityFrameworkCore
 {
     [DependsOn(
-        typeof(WeChatManagementSampleEntityFrameworkCoreDbMigrationsModule),
+        typeof(WeChatManagementSampleEntityFrameworkCoreModule),
         typeof(WeChatManagementSampleTestBaseModule),
         typeof(AbpEntityFrameworkCoreSqliteModule)
         )]
@@ -26,6 +27,7 @@ namespace WeChatManagementSample.EntityFrameworkCore
 
         private void ConfigureInMemorySqlite(IServiceCollection services)
         {
+            services.AddAlwaysDisableUnitOfWorkTransaction();
             _sqliteConnection = CreateDatabaseAndGetConnection();
 
             services.Configure<AbpDbContextOptions>(options =>
@@ -44,14 +46,14 @@ namespace WeChatManagementSample.EntityFrameworkCore
 
         private static SqliteConnection CreateDatabaseAndGetConnection()
         {
-            var connection = new SqliteConnection("Data Source=:memory:");
+            var connection = new AbpUnitTestSqliteConnection("Data Source=:memory:");
             connection.Open();
 
-            var options = new DbContextOptionsBuilder<WeChatManagementSampleMigrationsDbContext>()
+            var options = new DbContextOptionsBuilder<WeChatManagementSampleDbContext>()
                 .UseSqlite(connection)
                 .Options;
 
-            using (var context = new WeChatManagementSampleMigrationsDbContext(options))
+            using (var context = new WeChatManagementSampleDbContext(options))
             {
                 context.GetService<IRelationalDatabaseCreator>().CreateTables();
             }

@@ -1,10 +1,13 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using EasyAbp.WeChatManagement.Common.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Sqlite;
+using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.Modularity;
+using Volo.Abp.Uow;
 
 namespace EasyAbp.WeChatManagement.MiniPrograms.EntityFrameworkCore
 {
@@ -17,6 +20,7 @@ namespace EasyAbp.WeChatManagement.MiniPrograms.EntityFrameworkCore
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            context.Services.AddAlwaysDisableUnitOfWorkTransaction();
             var sqliteConnection = CreateDatabaseAndGetConnection();
 
             Configure<AbpDbContextOptions>(options =>
@@ -30,11 +34,19 @@ namespace EasyAbp.WeChatManagement.MiniPrograms.EntityFrameworkCore
         
         private static SqliteConnection CreateDatabaseAndGetConnection()
         {
-            var connection = new SqliteConnection("Data Source=:memory:");
+            var connection = new AbpUnitTestSqliteConnection("Data Source=:memory:");
             connection.Open();
+
+            new CommonDbContext(
+                new DbContextOptionsBuilder<CommonDbContext>().UseSqlite(connection).Options
+            ).GetService<IRelationalDatabaseCreator>().CreateTables();
 
             new MiniProgramsDbContext(
                 new DbContextOptionsBuilder<MiniProgramsDbContext>().UseSqlite(connection).Options
+            ).GetService<IRelationalDatabaseCreator>().CreateTables();
+
+            new IdentityDbContext(
+                new DbContextOptionsBuilder<IdentityDbContext>().UseSqlite(connection).Options
             ).GetService<IRelationalDatabaseCreator>().CreateTables();
             
             return connection;

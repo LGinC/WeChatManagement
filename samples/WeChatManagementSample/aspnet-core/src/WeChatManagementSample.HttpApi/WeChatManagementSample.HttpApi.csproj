@@ -3,21 +3,23 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>WeChatManagementSample</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\modules\ThirdPartyPlatforms\src\EasyAbp.WeChatManagement.ThirdPartyPlatforms.HttpApi\EasyAbp.WeChatManagement.ThirdPartyPlatforms.HttpApi.csproj" />
     <ProjectReference Include="..\WeChatManagementSample.Application.Contracts\WeChatManagementSample.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\..\modules\MiniPrograms\src\EasyAbp.WeChatManagement.MiniPrograms.HttpApi\EasyAbp.WeChatManagement.MiniPrograms.HttpApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Account.HttpApi" Version="3.1.2" />
-    <PackageReference Include="Volo.Abp.Identity.HttpApi" Version="3.1.2" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi" Version="3.1.2" />
-    <PackageReference Include="Volo.Abp.TenantManagement.HttpApi" Version="3.1.2" />
-    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi" Version="3.1.2" />
+    <PackageReference Include="Volo.Abp.Account.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Identity.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.TenantManagement.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.SettingManagement.HttpApi" Version="$(AbpVersion)" />
   </ItemGroup>
 
 </Project>

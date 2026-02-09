@@ -1,4 +1,5 @@
 ﻿using EasyAbp.WeChatManagement.MiniPrograms.EntityFrameworkCore;
+using EasyAbp.WeChatManagement.ThirdPartyPlatforms.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -6,7 +7,6 @@ using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity.EntityFrameworkCore;
-using Volo.Abp.IdentityServer.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
@@ -17,7 +17,6 @@ namespace WeChatManagementSample.EntityFrameworkCore
     [DependsOn(
         typeof(WeChatManagementSampleDomainModule),
         typeof(AbpIdentityEntityFrameworkCoreModule),
-        typeof(AbpIdentityServerEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
         typeof(AbpEntityFrameworkCoreSqlServerModule),
@@ -25,7 +24,8 @@ namespace WeChatManagementSample.EntityFrameworkCore
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpFeatureManagementEntityFrameworkCoreModule),
-        typeof(WeChatManagementMiniProgramsEntityFrameworkCoreModule)
+        typeof(WeChatManagementMiniProgramsEntityFrameworkCoreModule),
+        typeof(WeChatManagementThirdPartyPlatformsEntityFrameworkCoreModule)
     )]
     public class WeChatManagementSampleEntityFrameworkCoreModule : AbpModule
     {
@@ -46,7 +46,7 @@ namespace WeChatManagementSample.EntityFrameworkCore
             Configure<AbpDbContextOptions>(options =>
             {
                 /* The main point to change your DBMS.
-                 * See also WeChatManagementSampleMigrationsDbContextFactory for EF Core tooling. */
+                 * See also WeChatManagementSampleDbContextFactory for EF Core tooling. */
                 options.UseSqlServer();
             });
         }

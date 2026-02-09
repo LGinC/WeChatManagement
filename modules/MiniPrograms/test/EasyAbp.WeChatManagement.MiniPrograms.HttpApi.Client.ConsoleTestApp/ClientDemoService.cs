@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using IdentityModel.Client;
+using Duende.IdentityModel.Client;
 using Microsoft.Extensions.Configuration;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.IdentityModel;
@@ -66,7 +66,7 @@ namespace EasyAbp.WeChatManagement.MiniPrograms
             {
                 httpClient.SetBearerToken(accessToken);
 
-                var url = _configuration["RemoteServices:MiniPrograms:BaseUrl"] +
+                var url = _configuration["RemoteServices:EasyAbpWeChatManagement:BaseUrl"] +
                           "api/MiniPrograms/sample/authorized";
 
                 var responseMessage = await httpClient.GetAsync(url);
@@ -127,7 +127,7 @@ namespace EasyAbp.WeChatManagement.MiniPrograms
             {
                 httpClient.SetBearerToken(tokenResponse.AccessToken);
 
-                var url = _configuration["RemoteServices:MiniPrograms:BaseUrl"] +
+                var url = _configuration["RemoteServices:EasyAbpWeChatManagement:BaseUrl"] +
                           "api/MiniPrograms/sample/authorized";
 
                 var responseMessage = await httpClient.GetAsync(url);

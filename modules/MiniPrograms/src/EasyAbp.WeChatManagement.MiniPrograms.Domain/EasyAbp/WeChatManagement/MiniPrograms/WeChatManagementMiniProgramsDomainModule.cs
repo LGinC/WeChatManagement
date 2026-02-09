@@ -1,28 +1,26 @@
-﻿using EasyAbp.WeChatManagement.MiniPrograms.MiniPrograms;
+﻿using EasyAbp.Abp.WeChat.Common.Infrastructure.Options;
+using EasyAbp.Abp.WeChat.MiniProgram;
+using EasyAbp.Abp.WeChat.MiniProgram.Options;
+using EasyAbp.WeChatManagement.Common;
 using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.Domain.Entities.Events.Distributed;
-using Volo.Abp.IdentityServer;
 using Volo.Abp.Modularity;
+using Volo.Abp.Users;
 
 namespace EasyAbp.WeChatManagement.MiniPrograms
 {
     [DependsOn(
-        typeof(AbpIdentityServerDomainModule),
-        typeof(WeChatManagementMiniProgramsDomainSharedModule)
-        )]
+        typeof(AbpWeChatMiniProgramModule),
+        typeof(AbpUsersAbstractionModule),
+        typeof(WeChatManagementMiniProgramsDomainSharedModule),
+        typeof(WeChatManagementCommonDomainModule)
+    )]
     public class WeChatManagementMiniProgramsDomainModule : AbpModule
     {
-        public override void PreConfigureServices(ServiceConfigurationContext context)
+        public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            Configure<AbpDistributedEntityEventOptions>(options =>
-            {
-                options.AutoEventSelectors.Add<MiniProgram>();
-            });
-            
-            context.Services.PreConfigure<IIdentityServerBuilder>(builder =>
-            {
-                builder.AddExtensionGrantValidator<WeChatMiniProgramGrantValidator>();
-            });
+            context.Services
+                .AddTransient<IAbpWeChatOptionsProvider<AbpWeChatMiniProgramOptions>,
+                    WeChatManagementMiniProgramAbpWeChatOptionsProvider>();
         }
     }
 }

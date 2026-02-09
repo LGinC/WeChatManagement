@@ -3,22 +3,24 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>WeChatManagementSample</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\modules\ThirdPartyPlatforms\src\EasyAbp.WeChatManagement.ThirdPartyPlatforms.Application\EasyAbp.WeChatManagement.ThirdPartyPlatforms.Application.csproj" />
     <ProjectReference Include="..\WeChatManagementSample.Domain\WeChatManagementSample.Domain.csproj" />
     <ProjectReference Include="..\WeChatManagementSample.Application.Contracts\WeChatManagementSample.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\..\modules\MiniPrograms\src\EasyAbp.WeChatManagement.MiniPrograms.Application\EasyAbp.WeChatManagement.MiniPrograms.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Account.Application" Version="3.1.2" />
-    <PackageReference Include="Volo.Abp.Identity.Application" Version="3.1.2" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="3.1.2" />
-    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="3.1.2" />
-    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="3.1.2" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.SettingManagement.Application" Version="$(AbpVersion)" />
   </ItemGroup>
 
 </Project>

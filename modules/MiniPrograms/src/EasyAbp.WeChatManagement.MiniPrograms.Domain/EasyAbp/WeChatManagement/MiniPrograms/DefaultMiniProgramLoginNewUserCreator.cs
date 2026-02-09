@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EasyAbp.WeChatManagement.MiniPrograms.UserInfos;
-using IdentityServer4.Validation;
+using EasyAbp.WeChatManagement.Common;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;
 using Volo.Abp.Identity;
@@ -16,47 +16,50 @@ namespace EasyAbp.WeChatManagement.MiniPrograms
     {
         private readonly ICurrentTenant _currentTenant;
         private readonly IGuidGenerator _guidGenerator;
+        private readonly IOptions<IdentityOptions> _identityOptions;
         private readonly IdentityUserManager _identityUserManager;
 
         public DefaultMiniProgramLoginNewUserCreator(
             ICurrentTenant currentTenant,
             IGuidGenerator guidGenerator,
+            IOptions<IdentityOptions> identityOptions,
             IdentityUserManager identityUserManager)
         {
             _currentTenant = currentTenant;
             _guidGenerator = guidGenerator;
+            _identityOptions = identityOptions;
             _identityUserManager = identityUserManager;
         }
-        
-        public virtual async Task<IdentityUser> CreateAsync(UserInfoModel userInfoModel, string loginProvider, string providerKey)
+
+        public virtual async Task<IdentityUser> CreateAsync(string loginProvider, string providerKey, string phoneNumber = null)
         {
-            var identityUser = new IdentityUser(_guidGenerator.Create(), await GenerateUserNameAsync(userInfoModel),
-                await GenerateEmailAsync(userInfoModel), _currentTenant.Id);
-            
-            CheckIdentityResult(await _identityUserManager.CreateAsync(identityUser));
+            await _identityOptions.SetAsync();
 
-            CheckIdentityResult(await _identityUserManager.AddDefaultRolesAsync(identityUser));
+            var identityUser = new IdentityUser(_guidGenerator.Create(), await GenerateUserNameAsync(),
+                await GenerateEmailAsync(), _currentTenant.Id);
 
-            CheckIdentityResult(await _identityUserManager.AddLoginAsync(identityUser,
-                new UserLoginInfo(loginProvider, providerKey, "微信用户")));
-            
+            if (!phoneNumber.IsNullOrEmpty())
+            {
+                identityUser.SetPhoneNumber(phoneNumber, true);
+            }
+
+            (await _identityUserManager.CreateAsync(identityUser)).CheckErrors();
+
+            (await _identityUserManager.AddDefaultRolesAsync(identityUser)).CheckErrors();
+
+            (await _identityUserManager.AddLoginAsync(identityUser,
+                new UserLoginInfo(loginProvider, providerKey,
+                    WeChatManagementCommonConsts.WeChatUserLoginInfoDisplayName))).CheckErrors();
+
             return identityUser;
         }
 
-        protected virtual void CheckIdentityResult(IdentityResult result)
-        {
-            if (!result.Succeeded)
-            {
-                throw new AbpIdentityResultException(result);
-            }
-        }
-        
-        protected virtual Task<string> GenerateUserNameAsync(UserInfoModel userInfoModel)
+        protected virtual Task<string> GenerateUserNameAsync()
         {
             return Task.FromResult("WeChat_" + Guid.NewGuid());
         }
-        
-        protected virtual Task<string> GenerateEmailAsync(UserInfoModel userInfoModel)
+
+        protected virtual Task<string> GenerateEmailAsync()
         {
             return Task.FromResult(Guid.NewGuid() + "@fake-email.com");
         }
